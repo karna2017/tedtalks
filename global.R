@@ -1,0 +1,1 @@
+get(load("data.RData"))
