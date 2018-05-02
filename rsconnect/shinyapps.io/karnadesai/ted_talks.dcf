@@ -5,8 +5,8 @@ account: karnadesai
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 333136
-bundleId: 1348742
+bundleId: 1350718
 url: https://karnadesai.shinyapps.io/ted_talks/
-when: 1525148693.42942
+when: 1525232505.44714
 asMultiple: FALSE
 asStatic: FALSE
