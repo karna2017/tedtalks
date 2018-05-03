@@ -22,7 +22,7 @@ library(qdapRegex)
 library(rjson)
 library(rsconnect)
 library(wordcloud)
-library(tm)
+#library(tm)
 library(DT)
 library(jpeg)
 library(tidyr)
@@ -135,9 +135,7 @@ conditionalPanel(
           tabPanel("Home", 
                    fluidRow(
                          ),
-                   plotOutput("figure1"),
-                   br(),
-                   plotOutput("figure5")
+                   plotOutput("figure1"),plotOutput("figure5")
                    ),
           tabPanel("Views and Comments", 
                    fluidRow(

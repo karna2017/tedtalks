@@ -22,7 +22,7 @@ library(qdapRegex)
 library(rjson)
 library(rsconnect)
 library(wordcloud)
-library(tm)
+#library(tm)
 library(DT)
 library(jpeg)
 library(tidyr)
@@ -153,13 +153,14 @@ shinyServer(function(input, output, session) {
     })
  
     output$figure5 <- renderPlot({
-      g_talks = ggplot(df_final, aes(x= fct_reorder(name,count, fun = median), y=count)) + labs(x = "Rating Category",y="Count")+geom_boxplot(color='blue4')+theme_minimal(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45))
+      g_talks = ggplot(df_final, aes(x= fct_reorder(name,count, fun = median), y=count)) + labs(x = "Rating Category",y="Count")+geom_boxplot(color='blue4')+theme(axis.text.x = element_text(angle=45))
       g_talks+scale_y_log10()+ ggtitle("Vote distribution for rating categories")
     })
  
     output$figure6 <- renderPlot({
-      g_c_1000v=ggplot(mean_median_CperV, aes(year_num))+geom_line(aes(y = mean_CperV, colour = "mean"))+geom_line(aes(y = median_CperV, colour = "median"))+ labs(x = "Year",y="Comment per 1000 Views")+ theme_minimal()
-    })
+      g_c_1000v=ggplot(mean_median_CperV, aes(year_num))+geom_line(aes(y = mean_CperV, colour = "mean"))+geom_line(aes(y = median_CperV, colour = "median"))+ labs(x = "Year",y="Comment per 1000 Views")
+      g_c_1000v+theme_minimal()
+      })
     
     
     output$corr_plot <- renderPlot({
