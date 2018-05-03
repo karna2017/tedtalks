@@ -15,7 +15,7 @@ library(corrplot)
 library(ggplot2)
 library(anytime)
 library(dplyr)
-library(plyr)
+#library(plyr)
 library(ggplot2)
 library(stringr)
 library(qdapRegex)
@@ -25,6 +25,8 @@ library(wordcloud)
 library(tm)
 library(DT)
 library(jpeg)
+library(tidyr)
+library(forcats)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -39,7 +41,7 @@ shinyUI(fluidPage(
     sidebarPanel(
       
       conditionalPanel(
-        'input.dataset === "Summary"',
+        'input.dataset === "Home"',
         strong("Background:"),
       fluidRow("TED is a not-for-profit organization devoted to spreading ideas via short talks. Please see ted.com for more details. The dataset used in this shiny-app was obtained from"), 
     a("Kaggle.",href="https://www.kaggle.com/rounakbanik/ted-talks",target="_blank"),
@@ -130,16 +132,28 @@ conditionalPanel(
     mainPanel(
         tabsetPanel(
           id = 'dataset',
-          tabPanel("Summary", 
+          tabPanel("Home", 
                    fluidRow(
                          ),
                    plotOutput("figure1"),
                    br(),
-                   plotOutput("figure2"),plotOutput("figure3")
+                   plotOutput("figure5")
                    ),
+          tabPanel("Views and Comments", 
+                   fluidRow(
+                   ),
+                   plotOutput("figure3"),
+                   br(),
+                   plotOutput("figure4"),plotOutput("figure2"),plotOutput("figure6")
+                  ),
           tabPanel("Speaker Occupation", 
                    p("Writers lead this cohort followed by artists, designers, journalists, and entrepreneurs."),
                    plotOutput("speaker_plot")),
+          
+          tabPanel("Correlation",
+                   br(),
+                   br(),
+                   plotOutput("corr_plot")),
           
           tabPanel("Wordcloud of Ratings",
                    plotOutput("plot")),
@@ -147,10 +161,6 @@ conditionalPanel(
 #                   plotOutput(ratings_plot)),
 #                print(img(src='ted_talks.pdf'))),
 #          print(tags$iframe(src="./ted_talks.pdf"))),
-          tabPanel("Correlation",
-                   br(),
-                   br(),
-                   plotOutput("corr_plot")),
           tabPanel("Most Viewed", 
                    plotOutput("plot_MW"),
                   DT::dataTableOutput("mytable1")),
@@ -162,8 +172,13 @@ conditionalPanel(
                    DT::dataTableOutput("mytable3")),
           tabPanel("Most Commented, Least Viewed", 
                    plotOutput("plot_MC_LW"),
-                   DT::dataTableOutput("mytable4"))
-         )
+                   DT::dataTableOutput("mytable4")),
+          tabPanel("Most Rated", 
+                   DT::dataTableOutput("mytable5")),
+          tabPanel("Most Rated, Most Commented ", 
+                  DT::dataTableOutput("mytable6"))
+
+        )
     )
     
     

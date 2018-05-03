@@ -15,7 +15,7 @@ library(corrplot)
 library(ggplot2)
 library(anytime)
 library(dplyr)
-library(plyr)
+#library(plyr)
 library(ggplot2)
 library(stringr)
 library(qdapRegex)
@@ -25,6 +25,9 @@ library(wordcloud)
 library(tm)
 library(DT)
 library(jpeg)
+library(tidyr)
+library(forcats)
+
 
 
 # Define server logic required to draw a histogram
@@ -118,7 +121,17 @@ shinyServer(function(input, output, session) {
       DT::datatable(LW_MC, options = list(lengthMenu = c(5, 10, 15), 
                                        pageLength = 5,class = 'white-space: nowrap'))
     })
-  
+
+    output$mytable5 <- DT::renderDataTable({
+      DT::datatable(MR, options = list(lengthMenu = c(5, 10, 15), 
+                                          pageLength = 5,class = 'white-space: nowrap'))
+    })
+    
+    output$mytable6 <- DT::renderDataTable({
+      DT::datatable(MR_MC, options = list(lengthMenu = c(5, 10, 15), 
+                                          pageLength = 5,class = 'white-space: nowrap'))
+    })
+    
     output$figure1 <- renderPlot({
       g=ggplot(data=talks_year,aes(x=year,y=yearly_count))+labs(x = "year", y="number of talks")
       g + geom_bar(stat="identity",width=0.4,color="blue", fill="azure1")+ theme_minimal()
@@ -130,8 +143,22 @@ shinyServer(function(input, output, session) {
     })
 
     output$figure3 <- renderPlot({
-      g3 =  ggplot(ted, aes(x=year, y=views)) + geom_boxplot()
-      g3+scale_y_log10()
+      g3 =  ggplot(ted, aes(x=year, y=views)) + geom_boxplot(color='blue4')+labs(x = "year", y="cumulative views")
+      g3+scale_y_log10()+ theme_minimal()
+    })
+    
+    output$figure4 <- renderPlot({
+      g4 =  ggplot(ted, aes(x=year, y=comments)) + geom_boxplot(color='blue4')+labs(x = "year", y="cumulative comments")
+      g4+scale_y_log10()+ theme_minimal()
+    })
+ 
+    output$figure5 <- renderPlot({
+      g_talks = ggplot(df_final, aes(x= fct_reorder(name,count, fun = median), y=count)) + labs(x = "Rating Category",y="Count")+geom_boxplot(color='blue4')+theme_minimal(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle=45))
+      g_talks+scale_y_log10()+ ggtitle("Vote distribution for rating categories")
+    })
+ 
+    output$figure6 <- renderPlot({
+      g_c_1000v=ggplot(mean_median_CperV, aes(year_num))+geom_line(aes(y = mean_CperV, colour = "mean"))+geom_line(aes(y = median_CperV, colour = "median"))+ labs(x = "Year",y="Comment per 1000 Views")+ theme_minimal()
     })
     
     
@@ -143,6 +170,5 @@ shinyServer(function(input, output, session) {
     output$ratings_plot <- renderPlot({
      readJPEG("ted_talks_ratings_top.jpeg", native = FALSE)
     })
-
-
+    
     })
