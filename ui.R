@@ -47,22 +47,49 @@ shinyUI(fluidPage(
     a("Kaggle.",href="https://www.kaggle.com/rounakbanik/ted-talks",target="_blank"),
     fluidRow("The app analyzes all the talks published from 2006 to 2017."),
       br(),
+    
+    fluidRow("The aim of this work is to,"),
+    fluidRow("(1) understand people's overall engagement with talks, and"),
+    fluidRow("(2) provide recommendations to potential viewers by providing popular talks and relevant ratings.
+                  A person can select any of the 2550 talks and view its ratings."),
+    br(),
+    strong("Summary:"),
+    fluidRow("TED talks continue to be well received but the level of viewers' engagement 
+             as demonstrated by their comments has steeply gone down in recent years."),
+    br(),
+    
+    strong("Observations from figures on the right:"),
+    fluidRow("(1) The number of talks peaked in 2012 and has decreased slightly since then."),
+    fluidRow("(2) Talks are described by viewers as inspiring, informative, fascinating, persuasive, 
+             and beautiful. In some cases, talks are found to be just 'OK'."),
+    fluidRow("Please see the figure on the right for a comprehensive list of rating-descriptions given
+              by viewers. For each talk, every one of the 14 descriptions was selected by 
+              0 or more viewers.
+              The box plot shows the agragate number of rating-votes of viewers for all descriptions for all talks. 
+             For example: the median for the rating 'inspiring' was 220, meaning, on average 220 people rated a talk as
+             'inspiring', and half of the talks were rated 'inspiring' by more than 220 people.")
+        ),
+    
+    conditionalPanel(
+      'input.dataset === "Views and Comments"',
+      
+      strong("People's level of engagement, as demonstrated by the number of comments and views,
+            increased sharply from the beginning of the publications 
+          of talks to the year 2010, but there has been a sharp decline in people's engagement
+            since 2010."),
       br(),
-    fluidRow("Some preliminary insights:"),
-    fluidRow("(1) The publication of talks increased steadily from 2006 to 2012, and there has been a decline afterwards."),
-    fluidRow("(2) Importantly, people's level of engagement increased sharply from the beginning of the publications of talks to the year 2010, and then, there has been a shart decline in people's engagement.
-             Level of engagement is measured by dividing the sum of all comments for all talks by the sum of all views for all talks."),
-    fluidRow("(3) The median number of views for a talk in a given year has not drastically changed over the years."),
-    br()
-      ),
+      br(),
       
-#      conditionalPanel(
-#        'input.dataset === "diamonds"',
-#        checkboxGroupInput("show_vars", "Columns in diamonds to show:",
-#                           names(diamonds), selected = names(diamonds))
-#      )
-      
-      fluidRow(
+      fluidRow("Some preliminary insights:"),
+      fluidRow("(1) The grand total sum of views for all talks has remain more or less 
+               the same from 2006 to 2017. But the same is not true for comments as number of comments
+               have gone down significantly."),
+      fluidRow("(2) The top two figures indicate that the ratio of 'comments per views' would 
+              have gone down as well, and we do see the trend. The quantity plotted in the third 
+              figure on the right is the 'number of comments per 1000 views'."),
+      fluidRow("(3) The fourth figure shows the median of 'number of comments per 1000 views'
+               for all talks.")
+    ),      
         conditionalPanel(
           'input.dataset === "Wordcloud of Ratings"',
         selectInput("selection", "Choose a Talk:",
@@ -125,8 +152,32 @@ conditionalPanel(
       sliderInput("min_f_Sp",
                   "Minimum Frequency of Occupation of Speakers:",
                   min = 1,  max = 40, value = 5)
-      )
-    )),
+      ),
+
+conditionalPanel(
+  'input.dataset === "Most Rated"',
+  fluidRow("A set of 13 talks with 'rating count %' greater than 0.25%.  A 'rating count %' is defined 
+           as the number of votes received for a particular rating-description divided by the total
+           number of viewers."),
+  fluidRow("An observation: 'Building a park in the sky' by Robert Hammond was rated beautiful
+            by the highest % of viewers.")
+),
+conditionalPanel(
+  'input.dataset === "Most Rated, Most Commented"',
+  fluidRow("A set of 17 talks with 'rating count %' greater than 0.05% and the 'comment per 1000 views'
+          greater than 1.")
+  ),
+conditionalPanel(
+  'input.dataset === "Correlation"',
+  fluidRow("The variable 'number of languages in which a talk is translated' has a positive 
+           correlation with views and comments, a negative correlation with 'comments per views'."),
+  br(),
+  fluidRow("Comments, comments per views, and languages of translation have a negative correlation
+           with the publication year.")
+  )
+
+
+    ),
     
     # Show Word Cloud
     mainPanel(
@@ -173,7 +224,7 @@ conditionalPanel(
                    DT::dataTableOutput("mytable4")),
           tabPanel("Most Rated", 
                    DT::dataTableOutput("mytable5")),
-          tabPanel("Most Rated, Most Commented ", 
+          tabPanel("Most Rated, Most Commented", 
                   DT::dataTableOutput("mytable6"))
 
         )
